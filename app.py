@@ -19,7 +19,8 @@ from resources.motorista import Motorista
 from resources.uf import Uf
 from resources.veiculo import Veiculo
 
-from helpers.database import db
+from helpers.database import db, migrate
+
 
 # CORS
 app = Flask(__name__)
@@ -30,19 +31,19 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://aemotor:aemotor@localhost:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
+migrate.init_app(app, db)
 
-migrate = Migrate(app,db)
 
 api = Api(app)
 
 api.add_resource(IndexResource, '/')
 api.add_resource(Endereco, '/enderecos')
 api.add_resource(Pessoa, '/pessoas')
-api.add_resource(Prefeitura, '/pessoas')
-api.add_resource(Aluno, '/Aluno')
-api.add_resource(Funcionario, '/Funcionario')
-api.add_resource(GestorApp, '/GestorApp')
-api.add_resource(Cidade, '/Cidade')
+api.add_resource(Prefeitura, '/prefeituras')
+api.add_resource(Aluno, '/alunos')
+api.add_resource(Funcionario, '/funcionarios')
+api.add_resource(GestorApp, '/gestorApps')
+api.add_resource(Cidade, '/cidades')
 api.add_resource(Motorista, '/Motorista')
 api.add_resource(Passageiro, '/Passageiro')
 api.add_resource(Rota, '/Rota')
