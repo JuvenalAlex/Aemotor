@@ -7,7 +7,7 @@ from model.pessoa import PessoaModel
 class Pessoa(Resource):
     def get(self):
         current_app.logger.info("Get - Pessoas ")
-        prefeitura = Pessoa.query\
+        pessoa = Pessoa.query\
             .order_by(PessoaModel.email)\
             .all()
-        return prefeitura, 200
+        return pessoa, 200

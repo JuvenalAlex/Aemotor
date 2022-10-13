@@ -1,12 +1,76 @@
 from model.uf import Uf
+from model.error import Error, error_campos
+from sqlalchemy import exc
+from helpers.database import db
 from flask import jsonify
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
 
+parser = reqparse.RequestParser()
+parser.add_argument('id', required=True)
+parser.add_argument('nome', required=True)
+parser.add_argument('sigla', required=True)
+
 class Uf(Resource):
     def get(self):
         current_app.logger.info("Get - Uf")
-        endereco = Uf.query\
+        uf = Uf.query\
             .order_by(Uf.curso)\
             .all()
-        return endereco, 200
+        return uf, 200
+        
+    def post(self):
+        current_app.logger.info("Post - Uf")
+        try:
+            # JSON
+            
+            args = parser.parse_args()
+            sigla = args['sigla']
+            nome = args['nome']
+            id = args['id']
+
+            # Uf
+            uf = Uf(sigla,nome,id)
+            # Criação do Uf.
+            db.session.add(uf)
+            db.session.commit()
+        except exc.SQLAlchemyError as err:
+            current_app.logger.error(err)
+            erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
+                         err.__cause__())
+            return marshal(erro, error_campos), 500
+
+        return 204
+    
+    def put(self, uf_id):
+        current_app.logger.info("Put - Uf")
+        try:
+            # Parser JSON
+            args = parser.parse_args()
+            current_app.logger.info("Uf: %s:" % args)
+            # Evento
+            sigla = args['sigla']
+            nome = args['nome']
+            id = args['id']
+
+            Uf.query \
+                .filter_by(id=uf_id) \
+                .update(dict(sigla=sigla,nome=nome,id=id))
+            db.session.commit()
+
+        except exc.SQLAlchemyError:
+            current_app.logger.error("Exceção")
+
+        return 204
+    
+    def delete(self, uf_id):
+        current_app.logger.info("Delete - Uf: %s:" % uf_id)
+        try:
+            Uf.query.filter_by(id=uf_id).delete()
+            db.session.commit()
+
+        except exc.SQLAlchemyError:
+            current_app.logger.error("Exceção")
+            return 404
+
+        return 204

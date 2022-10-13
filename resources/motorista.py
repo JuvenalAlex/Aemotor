@@ -6,7 +6,7 @@ from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 class Motorista(Resource):
     def get(self):
         current_app.logger.info("Get - Motorista")
-        endereco = Motorista.query\
+        motorista = Motorista.query\
             .order_by(Motorista.curso)\
             .all()
-        return endereco, 200
+        return motorista, 200
