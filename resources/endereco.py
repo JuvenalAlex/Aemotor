@@ -1,12 +1,16 @@
+
+from flask_restful import Resource, reqparse, current_app, marshal, marshal_with
+from sqlalchemy import exc
+
+from helpers.database import db
+
 from model.endereco import Endereco
 from model.error import Error, error_campos
-from helpers.database import db
-from flask import jsonify
-from sqlalchemy import exc
-from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
+
 
 parser = reqparse.RequestParser()
 parser.add_argument('logradouro', required=True)
+
 
 class Endereco(Resource):
     def get(self):
@@ -14,6 +18,7 @@ class Endereco(Resource):
         endereco = Endereco.query\
             .all()
         return endereco, 200
+
     def post(self):
         current_app.logger.info("Post - Endereços")
         try:
@@ -33,7 +38,7 @@ class Endereco(Resource):
             return marshal(erro, error_campos), 500
 
         return 204
-    
+
     def put(self, endereco_id):
         current_app.logger.info("Put - Endereço")
         try:
@@ -52,7 +57,7 @@ class Endereco(Resource):
             current_app.logger.error("Exceção")
 
         return 204
-    
+
     def delete(self, endereco_id):
         current_app.logger.info("Delete - Endereço: %s:" % endereco_id)
         try:

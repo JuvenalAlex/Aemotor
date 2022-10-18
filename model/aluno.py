@@ -14,4 +14,5 @@ class Aluno(db.Model):
         self.instituicaoDeEnsino = instituicaoDeEnsino
         self.curso = curso
         self.matricula = matricula
-        
+    def __repr__(self):
+        return '<Address %r>' % self.instituicaoDeEnsino
