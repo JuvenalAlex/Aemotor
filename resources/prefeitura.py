@@ -3,7 +3,7 @@ from model.error import Error, error_campos
 from sqlalchemy import exc
 from helpers.database import db
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
-from model.prefeitura import Prefeitura
+from model.prefeitura import Prefeitura_db
 
 parser = reqparse.RequestParser()
 parser.add_argument('email', required=True)
@@ -11,8 +11,8 @@ parser.add_argument('email', required=True)
 class Prefeitura(Resource):
     def get(self):
         current_app.logger.info("Get - Prefeituras ")
-        prefeitura = Prefeitura.query\
-            .order_by(Prefeitura.email)\
+        prefeitura = Prefeitura_db.query\
+            .order_by(Prefeitura_db.email)\
             .all()
         return prefeitura, 200
     
@@ -24,7 +24,7 @@ class Prefeitura(Resource):
             email = args['email']
 
             # Prefeitura
-            prefeitura = Prefeitura(email)
+            prefeitura = Prefeitura_db(email)
             # Criação do Prefeitura.
             db.session.add(prefeitura)
             db.session.commit()
@@ -45,7 +45,7 @@ class Prefeitura(Resource):
             # Evento
             email = args['email']
 
-            Prefeitura.query \
+            Prefeitura_db.query \
                 .filter_by(id=prefeitura_id) \
                 .update(dict(email=email))
             db.session.commit()
@@ -58,7 +58,7 @@ class Prefeitura(Resource):
     def delete(self, prefeitura_id):
         current_app.logger.info("Delete - Prefeitura: %s:" % prefeitura_id)
         try:
-            Prefeitura.query.filter_by(id=prefeitura_id).delete()
+            Prefeitura_db.query.filter_by(id=prefeitura_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class GestorApp(db.Model):
+class GestorApp_db(db.Model):
 
     __tablename__ = 'tb_gestorApp'
 

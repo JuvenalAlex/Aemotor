@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class InstituicaoDeEnsino(db.Model):
+class InstituicaoDeEnsino_db(db.Model):
 
     __tablename__ = 'tb_InstituicaoDeEnsino'
 

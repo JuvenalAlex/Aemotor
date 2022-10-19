@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class Uf(db.Model):
+class Uf_db(db.Model):
 
     __tablename__ = 'tb_uf'
 

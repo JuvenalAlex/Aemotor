@@ -1,4 +1,4 @@
-from model.funcionario import Funcionario 
+from model.funcionario import Funcionario_db 
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -13,8 +13,8 @@ parser.add_argument('cargo', required=True)
 class Funcionario(Resource):
     def get(self):
         current_app.logger.info("Get - Funcionarios")
-        funcionario = Funcionario.query\
-            .order_by(Funcionario.cargo)\
+        funcionario = Funcionario_db.query\
+            .order_by(Funcionario_db.cargo)\
             .all()
         return funcionario, 200
     def post(self):
@@ -26,7 +26,7 @@ class Funcionario(Resource):
             cargo = args['cargo']
 
             # Funcionario
-            funcionario = Funcionario(prefeitura,cargo)
+            funcionario = Funcionario_db(prefeitura,cargo)
             # Criação do Funcionario.
             db.session.add(funcionario)
             db.session.commit()
@@ -49,7 +49,7 @@ class Funcionario(Resource):
             cargo = args['cargo']
     
 
-            Funcionario.query \
+            Funcionario_db.query \
                 .filter_by(id=funcionario_id) \
                 .update(dict(prefeitura=prefeitura,cargo = cargo ))
             db.session.commit()
@@ -62,7 +62,7 @@ class Funcionario(Resource):
     def delete(self, funcionario_id):
         current_app.logger.info("Delete - Funcionarios: %s:" % funcionario_id)
         try:
-            Funcionario.query.filter_by(id=funcionario_id).delete()
+            Funcionario_db.query.filter_by(id=funcionario_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

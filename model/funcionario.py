@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class Funcionario(db.Model):
+class Funcionario_db(db.Model):
 
     __tablename__ = 'tb_funcionario'
 

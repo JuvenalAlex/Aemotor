@@ -1,4 +1,4 @@
-from model.aluno import Aluno
+from model.aluno import Aluno_db
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -12,9 +12,9 @@ parser.add_argument('matricula', required=True)
 
 class Aluno(Resource):
     def get(self):
-        current_app.logger.info("Get - Aluno")
-        aluno = Aluno.query\
-            .order_by(Aluno.curso)\
+        current_app.logger.info("Get - Alunodb")
+        aluno = Aluno_db.query\
+            .order_by(Aluno_db.curso)\
             .all()
         return aluno, 200
     
@@ -26,9 +26,9 @@ class Aluno(Resource):
             instituicaoDeEnsino = args['instituicaoDeEnsino']
             curso = args['curso']
             matricula = args['matricula']
-            # Aluno
-            aluno = Aluno(instituicaoDeEnsino,curso,matricula)
-            # Criação do Aluno.
+            # Alunodb
+            aluno = Aluno_db(instituicaoDeEnsino,curso,matricula)
+            # Criação do Alunodb.
             db.session.add(aluno)
             db.session.commit()
         except exc.SQLAlchemyError as err:
@@ -44,13 +44,13 @@ class Aluno(Resource):
         try:
             # Parser JSON
             args = parser.parse_args()
-            current_app.logger.info("Aluno: %s:" % args)
+            current_app.logger.info("Alunodb: %s:" % args)
             # Evento
             instituicaoDeEnsino = args['instituicaoDeEnsino']
             curso = args['curso']
             matricula = args['matricula']
 
-            Aluno.query \
+            Aluno_db.query \
                 .filter_by(id=aluno_id) \
                 .update(dict(instituicaoDeEnsino=instituicaoDeEnsino,curso = curso, matricula = matricula))
             db.session.commit()
@@ -61,9 +61,9 @@ class Aluno(Resource):
         return 204
     
     def delete(self, aluno_id):
-        current_app.logger.info("Delete - Aluno: %s:" % aluno_id)
+        current_app.logger.info("Delete - Alunodb: %s:" % aluno_id)
         try:
-            Aluno.query.filter_by(id=aluno_id).delete()
+            Aluno_db.query.filter_by(id=aluno_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

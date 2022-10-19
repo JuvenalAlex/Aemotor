@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class Rota(db.Model):
+class Rota_db(db.Model):
 
     __tablename__ = 'tb_Rota'
 

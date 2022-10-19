@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class Aluno(db.Model):
+class Aluno_db(db.Model):
 
     __tablename__ = 'tb_aluno'
 

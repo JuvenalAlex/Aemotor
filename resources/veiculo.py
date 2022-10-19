@@ -1,4 +1,4 @@
-from model.veiculo import Veiculo
+from model.veiculo import Veiculo_db
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -14,8 +14,8 @@ parser.add_argument('placa', required=True)
 class Veiculo(Resource):
     def get(self):
         current_app.logger.info("Get - Veiculo")
-        veiculo = Veiculo.query\
-            .order_by(Veiculo.cidade)\
+        veiculo = Veiculo_db.query\
+            .order_by(Veiculo_db.cidade)\
             .all()
         return veiculo, 200
     def post(self):
@@ -28,7 +28,7 @@ class Veiculo(Resource):
             tipoVeiculo = args['tipoVeiculo']
             placa = args['placa']
             # Veiculo
-            veiculo = Veiculo(cidade,qtdPassageiros,tipoVeiculo,placa)
+            veiculo = Veiculo_db(cidade,qtdPassageiros,tipoVeiculo,placa)
             # Criação do Veiculo.
             db.session.add(veiculo)
             db.session.commit()
@@ -52,7 +52,7 @@ class Veiculo(Resource):
             tipoVeiculo = args['tipoVeiculo']
             placa = args['placa']
             
-            Veiculo.query \
+            Veiculo_db.query \
                 .filter_by(id=veiculo_id) \
                 .update(dict(cidade=cidade,qtdPassageiros = qtdPassageiros, tipoVeiculo = tipoVeiculo,placa = placa))
             db.session.commit()
@@ -65,7 +65,7 @@ class Veiculo(Resource):
     def delete(self, veiculo_id):
         current_app.logger.info("Delete - Veiculos: %s:" % veiculo_id)
         try:
-            Veiculo.query.filter_by(id=veiculo_id).delete()
+            Veiculo_db.query.filter_by(id=veiculo_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

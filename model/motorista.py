@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class Motorista(db.Model):
+class Motorista_db(db.Model):
 
     __tablename__ = 'tb_motorista'
 

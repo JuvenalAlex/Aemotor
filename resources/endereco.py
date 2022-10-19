@@ -4,7 +4,7 @@ from sqlalchemy import exc
 
 from helpers.database import db
 
-from model.endereco import Endereco
+from model.endereco import Endereco_db
 from model.error import Error, error_campos
 
 
@@ -15,7 +15,7 @@ parser.add_argument('logradouro', required=True)
 class Endereco(Resource):
     def get(self):
         current_app.logger.info("Get - Endereços")
-        endereco = Endereco.query\
+        endereco = Endereco_db.query\
             .all()
         return endereco, 200
 
@@ -26,9 +26,9 @@ class Endereco(Resource):
             args = parser.parse_args()
             logradouro = args['logradouro']
 
-            # Endereco
-            endereco = Endereco(logradouro)
-            # Criação do Endereco.
+            # Enderecodb
+            endereco = Endereco_db(logradouro)
+            # Criação do Enderecodb.
             db.session.add(endereco)
             db.session.commit()
         except exc.SQLAlchemyError as err:
@@ -48,7 +48,7 @@ class Endereco(Resource):
             # Evento
             logradouro = args['logradouro']
 
-            Endereco.query \
+            Endereco_db.query \
                 .filter_by(id=endereco_id) \
                 .update(dict(logradouro=logradouro))
             db.session.commit()
@@ -61,7 +61,7 @@ class Endereco(Resource):
     def delete(self, endereco_id):
         current_app.logger.info("Delete - Endereço: %s:" % endereco_id)
         try:
-            Endereco.query.filter_by(id=endereco_id).delete()
+            Endereco_db.query.filter_by(id=endereco_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

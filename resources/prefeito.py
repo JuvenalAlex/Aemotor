@@ -1,4 +1,4 @@
-from model.prefeito import Prefeito
+from model.prefeito import Prefeito_db
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -11,8 +11,8 @@ parser.add_argument('nome', required=True)
 class Prefeito(Resource):
     def get(self):
         current_app.logger.info("Get - Prefeitos")
-        prefeito = Prefeito.query\
-            .order_by(Prefeito.nome)\
+        prefeito = Prefeito_db.query\
+            .order_by(Prefeito_db.nome)\
             .all()
         return prefeito, 200
     def post(self):
@@ -24,7 +24,7 @@ class Prefeito(Resource):
           
 
             # Prefeito
-            prefeito = Prefeito(nome)
+            prefeito = Prefeito_db(nome)
             # Criação do Prefeito.
             db.session.add(prefeito)
             db.session.commit()
@@ -47,7 +47,7 @@ class Prefeito(Resource):
             
     
 
-            Prefeito.query \
+            Prefeito_db.query \
                 .filter_by(id=prefeito_id) \
                 .update(dict(nome=nome ))
             db.session.commit()
@@ -60,7 +60,7 @@ class Prefeito(Resource):
     def delete(self, prefeito_id):
         current_app.logger.info("Delete - Prefeitos: %s:" % prefeito_id)
         try:
-            Prefeito.query.filter_by(id=prefeito_id).delete()
+            Prefeito_db.query.filter_by(id=prefeito_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

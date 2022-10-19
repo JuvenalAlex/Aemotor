@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class Endereco(db.Model):
+class Endereco_db(db.Model):
     __tablename__ = "tb_endereco"
 
     id = db.Column(db.Integer, primary_key=True)

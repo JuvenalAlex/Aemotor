@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class Cidade(db.Model):
+class Cidade_db(db.Model):
     __tablename__ = 'tb_cidade'
 
     id = db.Column(db.Integer, primary_key=True)

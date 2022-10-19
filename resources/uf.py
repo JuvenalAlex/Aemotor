@@ -1,4 +1,4 @@
-from model.uf import Uf
+from model.uf import Uf_db
 from model.error import Error, error_campos
 from sqlalchemy import exc
 from helpers.database import db
@@ -13,8 +13,8 @@ parser.add_argument('sigla', required=True)
 class Uf(Resource):
     def get(self):
         current_app.logger.info("Get - Ufs")
-        uf = Uf.query\
-            .order_by(Uf.curso)\
+        uf = Uf_db.query\
+            .order_by(Uf_db.sigla)\
             .all()
         return uf, 200
         
@@ -29,7 +29,7 @@ class Uf(Resource):
             
 
             # Uf
-            uf = Uf(sigla,nome)
+            uf = Uf_db(sigla,nome)
             # Criação do Uf.
             db.session.add(uf)
             db.session.commit()
@@ -50,9 +50,9 @@ class Uf(Resource):
             # Evento
             sigla = args['sigla']
             nome = args['nome']
-            id = args['id']
+           
 
-            Uf.query \
+            Uf_db.query \
                 .filter_by(id=uf_id) \
                 .update(dict(sigla=sigla,nome=nome))
             db.session.commit()
@@ -65,7 +65,7 @@ class Uf(Resource):
     def delete(self, uf_id):
         current_app.logger.info("Delete - Ufs: %s:" % uf_id)
         try:
-            Uf.query.filter_by(id=uf_id).delete()
+            Uf_db.query.filter_by(id=uf_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

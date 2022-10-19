@@ -1,7 +1,7 @@
 from helpers.database import db
 
 
-class PessoaModel(db.Model):
+class PessoaModel_db(db.Model):
 
     __tablename__ = 'tb_pessoa'
 
